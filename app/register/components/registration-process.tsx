@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Slider } from "@/components/ui/slider"
 import Link from "next/link"
+import { Icons } from "@/components/icons"
 
 const steps = [
   {
@@ -85,6 +86,20 @@ const steps = [
           <Label htmlFor="password">Password</Label>
           <Input id="password" type="password" required />
         </div>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+        <Button variant="outline" className="w-full" onClick={() => console.log("Google sign up")}>
+          <Icons.google className="mr-2 h-4 w-4" />
+          Sign up with Google
+        </Button>
       </div>
     ),
   },
@@ -92,6 +107,7 @@ const steps = [
 
 export function RegistrationProcess() {
   const [currentStep, setCurrentStep] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -115,13 +131,10 @@ export function RegistrationProcess() {
         <CardDescription>{steps[currentStep].description}</CardDescription>
       </CardHeader>
       <CardContent>{steps[currentStep].content}</CardContent>
-      <CardFooter className="flex justify-between">
-        {currentStep > 0 && (
-          <Button variant="outline" onClick={handlePrevious}>
-            Previous
-          </Button>
-        )}
-        <Button onClick={handleNext}>{currentStep === steps.length - 1 ? "Complete Registration" : "Next"}</Button>
+      <CardFooter className="flex flex-col space-y-4">
+        <Button onClick={handleNext}>
+          {currentStep === steps.length - 1 ? "Complete Registration" : "Next"}
+        </Button>
       </CardFooter>
       {currentStep === steps.length - 1 && (
         <div className="text-center text-sm text-gray-600 mt-4">
